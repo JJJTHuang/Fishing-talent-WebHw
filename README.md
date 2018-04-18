@@ -6,4 +6,4 @@
 
 2.linux/mac可以执行 npm i -g http-server这条命令,然后到项目的根目录下执行命令 http-server
 
---暂时未完成--
+--项目暂时未完成--
