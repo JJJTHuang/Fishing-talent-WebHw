@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canva_hunting_fish</title>
+    <style>
+        body{
+            text-align: center;
+            background: #000;
+        }
+        #canvas{
+            background-image: url('img/game_bg_2_hd.jpg')
+        }
+    </style>
+    <script src="jquery.js"></script>
+    <script src="js/LoadResources.js"></script>
+    <script src="js/Spirit.js"></script>
+    <script src="js/Fish.js"></script>
+    <script>
+        window.onload = async function(){
+            let oC = document.getElementById('canvas'),
+                gd = oC.getContext('2d')
+            try{
+                await LoadR()
+                
+                let fish1 = new fish('1')
+                fish1.x = 100
+                fish1.y = 300
+                fish1.draw(gd)
+
+                requestAnimationFrame(next)
+
+                function next(){
+                    gd.clearRect(0,0,oC.width,oC.height)
+                    fish1.draw(gd)
+                    fish1.move()
+                    fish1.nextFrame()
+                    // requestAnimationFrame(next)
+                }
+
+
+                console.log(window._g_resource)
+            }catch(e){
+                alert('加载失败,请刷新。')
+                throw e
+            }
+            
+        }
+    </script>
+</head>
+<body>
+    <canvas width="800" height="600" id="canvas"></canvas>
+</body>
+</html>
