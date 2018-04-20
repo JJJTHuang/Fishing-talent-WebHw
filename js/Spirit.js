@@ -26,6 +26,8 @@ class Spirit {
 
         gd.translate(this.x, this.y)
 
+        gd.rotate(this.rotation* Math.PI / 180)
+
         gd.drawImage(
             this.img,
             this.sx, this.sy, this.w, this.h,
@@ -36,12 +38,10 @@ class Spirit {
     }
 
     move(gd) {
-        let speedx = this.speed * Math.sin(this.rotation * (Math.PI / 180))
-        let speedy = this.speed * Math.cos(this.rotation * (Math.PI / 180))
-        console.log(this.rotation)
+        let speedx = this.speed * Math.sin(this.rotation * (Math.PI / 180)) //横坐标速度
+        let speedy = this.speed * Math.cos(this.rotation * (Math.PI / 180)) //纵坐标速度
         this.x += speedx
         this.y -= speedy
-
     }
 
     setFrame(frame) {
@@ -59,6 +59,13 @@ class Spirit {
         }
 
         this.tick++
-        console.log(this.tick, this.frame)
+
+        //达到一定帧数就换一张图片,从而达到动画的效果
+        // this.tick === this.max_tick ? (function(){
+        //     this.frame === this.max_frame ? this.frame = 0 : ''
+        //     this.tick = 0
+        //     this.frame++
+        //     this.setFrame(this.frame)            
+        // })() : ''
     }
 }

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Canva_hunting_fish</title>
     <style>
-        body{
+        body {
             text-align: center;
             background: #000;
         }
-        #canvas{
+
+        #canvas {
             background-image: url('img/game_bg_2_hd.jpg')
         }
     </style>
@@ -18,39 +20,117 @@
     <script src="js/LoadResources.js"></script>
     <script src="js/Spirit.js"></script>
     <script src="js/Fish.js"></script>
+    <script src="js/Cannon.js"></script>
+    <script src="js/Bullet.js"></script>
+    <script src="js/Button.js"></script>
     <script>
-        window.onload = async function(){
+        window.onload = async function () {
+
+            //创建Canvas
             let oC = document.getElementById('canvas'),
                 gd = oC.getContext('2d')
-            try{
-                await LoadR()
-                
-                let fish1 = new fish('1')
-                fish1.x = 100
-                fish1.y = 300
-                fish1.draw(gd)
 
-                requestAnimationFrame(next)
-
-                function next(){
-                    gd.clearRect(0,0,oC.width,oC.height)
-                    fish1.draw(gd)
-                    fish1.move()
-                    fish1.nextFrame()
-                    // requestAnimationFrame(next)
-                }
-
-
-                console.log(window._g_resource)
-            }catch(e){
+            try {
+                await LoadR()//异步请求,有可能失败,所以要catch一下
+            } catch (e) {
                 alert('加载失败,请刷新。')
                 throw e
             }
+
+            //画一条鱼儿
+            let fish = new Fish('1')
+            fish.x = 100
+            fish.y = 300
+            fish.draw(gd)
+
+            //画一个bottom_bar
+            let data_bar = _g_resource['bottom'].bottom_bar
+            let bottom_bar = new Spirit({
+                img: data_bar.img,
+                sx: data_bar.frame.x, sy: data_bar.frame.y,
+                w: data_bar.frame.w, h: data_bar.frame.h
+            })
+            bottom_bar.x = 400
+            bottom_bar.y = 566
+            bottom_bar.draw(gd)
+
+            //画一个炮塔
+            let cannon = new Cannon('2')
+            cannon.x = 450
+            cannon.y = 566
+            cannon.draw(gd)
+
+            oC.onmousemove = ((ev) => {
+                let x = ev.offsetX - cannon.x, y = ev.offsetY - cannon.y
+                cannon.rotation = Math.atan2(y, x) * 180 / Math.PI + 90;
+                console.log(cannon.rotation)
+            })
+
+
+            //当点击的时候,画子弹
+            let Bullets = []
+            oC.onclick = (ev => {
+                //发射子弹
+                let bullet = new Bullet(`${cannon.type}`)
+                bullet.x = cannon.x
+                bullet.y = cannon.y
+                bullet.rotation = cannon.rotation
+                Bullets.push(bullet)
+
+                //按钮切换
+                if(checkDown(Button_minus)){
+
+                }
+
+                if(checkDown(Button_plus)){
+
+                }
+            })
+
+            //画个按钮
+            let Button_minus = new Button('minus'),Button_plus = new Button('plus')
+
+            Button_minus.x = cannon.x - 60
+            Button_plus.x = cannon.x + 60
+            Button_plus.y = Button_minus.y = cannon.y + 15
+            Button_minus.draw(gd)
+            Button_plus.draw(gd)
+
+            //  ---  炮塔类型转换
+
+            nextFrame(gd)
+
+            function nextFrame(gd) {
+                requestAnimationFrame(next)
+
+                function next() {
+                    gd.clearRect(0, 0, oC.width, oC.height)
+                    
+                    fish.draw(gd)
+                    fish.move()
+                    fish.nextFrame()
+                    bottom_bar.draw(gd)
+                    cannon.draw(gd)
+
+                    Bullets.forEach(bullet => {
+                        bullet.draw(gd)
+                        bullet.move()
+                    })
+
+                    Button_minus.draw(gd)
+                    Button_plus.draw(gd)
+
+                    requestAnimationFrame(next)
+                }
+            }
+
             
         }
     </script>
 </head>
+
 <body>
     <canvas width="800" height="600" id="canvas"></canvas>
 </body>
+
 </html>
