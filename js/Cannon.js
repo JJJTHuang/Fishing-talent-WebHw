@@ -19,5 +19,13 @@ class Cannon extends Spirit{
 
     setType(type){
         this.type  = type
+
+        let data = _g_resource['cannon'][`cannon${type}`]
+
+        this.img = data.img
+        this.sx = data.frame.x
+        this.sy = data.frame.y
+        this.w = data.frame.w
+        this.h = data.frame.h
     }
 }

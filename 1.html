@@ -55,7 +55,7 @@
             bottom_bar.draw(gd)
 
             //画一个炮塔
-            let cannon = new Cannon('2')
+            let cannon = new Cannon(1)
             cannon.x = 450
             cannon.y = 566
             cannon.draw(gd)
@@ -63,9 +63,7 @@
             oC.onmousemove = ((ev) => {
                 let x = ev.offsetX - cannon.x, y = ev.offsetY - cannon.y
                 cannon.rotation = Math.atan2(y, x) * 180 / Math.PI + 90;
-                console.log(cannon.rotation)
             })
-
 
             //当点击的时候,画子弹
             let Bullets = []
@@ -77,18 +75,32 @@
                 bullet.rotation = cannon.rotation
                 Bullets.push(bullet)
 
-                //按钮切换
-                if(checkDown(Button_minus)){
+            })
 
+            //按钮切换
+            oC.onmousedown = (ev => {
+                if (cannon.type > 1) {
+                    if (Button_minus.checkDown(ev.offsetX, ev.offsetY)) {
+                        cannon.setType(--cannon.type)
+                    }
                 }
 
-                if(checkDown(Button_plus)){
-
+                if (cannon.type < 7) {
+                    if (Button_plus.checkDown(ev.offsetX, ev.offsetY)) {
+                        cannon.setType(++cannon.type)
+                    }
                 }
+
+                cannon.draw(gd)
+            })
+
+            oC.onmouseup = (ev => {
+                Button_plus.checkUp(ev.offsetX, ev.offsetY)
+                Button_minus.checkUp(ev.offsetX, ev.offsetY)
             })
 
             //画个按钮
-            let Button_minus = new Button('minus'),Button_plus = new Button('plus')
+            let Button_minus = new Button('minus'), Button_plus = new Button('plus')
 
             Button_minus.x = cannon.x - 60
             Button_plus.x = cannon.x + 60
@@ -96,7 +108,7 @@
             Button_minus.draw(gd)
             Button_plus.draw(gd)
 
-            //  ---  炮塔类型转换
+            //  ---  炮塔类型转换 ---
 
             nextFrame(gd)
 
@@ -105,7 +117,7 @@
 
                 function next() {
                     gd.clearRect(0, 0, oC.width, oC.height)
-                    
+
                     fish.draw(gd)
                     fish.move()
                     fish.nextFrame()
@@ -124,7 +136,7 @@
                 }
             }
 
-            
+
         }
     </script>
 </head>

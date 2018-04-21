@@ -6,7 +6,7 @@ class Button extends Spirit {
         super({
             img: data.img,
             sx: data.frame.x, sy: data.frame.y,
-            w: data.frame.w, h: data.frame.h,
+            w: data.frame.w, h: data.frame.h
         })
 
         this.type = type
@@ -27,14 +27,31 @@ class Button extends Spirit {
     }
 
     checkDown(x,y){
-        if(_check(x,y)){
+        if(this._check(x,y)){
 
+            let data = _g_resource['bottom'][`cannon_${this.type}_down`]
+
+            this.img = data.img
+            this.sx  = data.frame.x
+            this.sy = data.frame.y
+            this.w = data.frame.w
+            this.h = data.frame.h
+
+            return true
         }
     }
 
     checkUp(x,y){
-        if (_check(x, y)){
-            
+        if (this._check(x, y)){
+            let data = _g_resource['bottom'][`cannon_${this.type}`]
+
+            this.img = data.img
+            this.sx = data.frame.x
+            this.sy = data.frame.y
+            this.w = data.frame.w
+            this.h = data.frame.h
+
+            return true
         }
     }
 }
