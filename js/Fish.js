@@ -17,8 +17,8 @@ class Fish extends Spirit{
     }
 
     draw(gd){
-        this.rotation = 0
+        this.rotation -= 90
         super.draw(gd)
-        this.rotation = 90
+        this.rotation += 90
     }
 }

@@ -6,8 +6,6 @@ class Cannon extends Spirit{
 
         const data = window._g_resource['cannon'][`cannon${type}`]
 
-        console.log(data)
-        
         super({
             img:   data.img,
             sx:    data.frame.x,  sy: data.frame.y,
@@ -15,9 +13,12 @@ class Cannon extends Spirit{
         })
 
         this.type = type
+        this.S_flag = false
     }
 
     setType(type){
+        //仅仅改变类型,炮塔的是不会变的
+        //因此要改动下面的属性,也就是不同类型的炮塔对应的图片,以及坐标等
         this.type  = type
 
         let data = _g_resource['cannon'][`cannon${type}`]
@@ -27,5 +28,9 @@ class Cannon extends Spirit{
         this.sy = data.frame.y
         this.w = data.frame.w
         this.h = data.frame.h
+    }
+
+    nextFrame(){
+        super.nextFrame()
     }
 }

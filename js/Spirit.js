@@ -11,8 +11,8 @@ class Spirit {
 
         this.rotation = options.rotation || 0
 
-        this.scale = options.scale || 1
-
+        this.scaleX = options.scaleX || 1
+        this.scaleY = options.scaleY || 1
         this.speed = options.speed || 0
 
         this.frame = options.frame || 0 //帧计数器
@@ -27,6 +27,8 @@ class Spirit {
         gd.translate(this.x, this.y)
 
         gd.rotate(this.rotation* Math.PI / 180)
+
+        gd.scale(this.scaleX, this.scaleY)
 
         gd.drawImage(
             this.img,
@@ -49,6 +51,7 @@ class Spirit {
     }
 
     nextFrame() {
+        //达到一定帧数就换一张图片,从而达到动画的效果
         if (this.tick == this.max_tick) {
             if (this.frame == this.max_frame) {
                 this.frame = 0
@@ -60,12 +63,33 @@ class Spirit {
 
         this.tick++
 
-        //达到一定帧数就换一张图片,从而达到动画的效果
+        
         // this.tick === this.max_tick ? (function(){
         //     this.frame === this.max_frame ? this.frame = 0 : ''
         //     this.tick = 0
         //     this.frame++
         //     this.setFrame(this.frame)            
         // })() : ''
+    }
+
+    //检测物体是否超出画布
+    outOfCanvas(w,h){
+        if(
+            this.x > w + this.w || this.x < 0 - this.w ||
+            this.y > h + this.h || this.y < 0 - this.h
+        ){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    //检测两个物体是否发生碰撞
+    Collision(obj){
+        let R = this.w / 2.5 , r = obj.w / 2.5,
+            x = this.x - obj.x ,y = this.y - obj.y,
+            dis = Math.abs(Math.sqrt(Math.pow(x,2)+Math.pow(y,2)))
+
+        return (dis <= R+r)
     }
 }
